@@ -6,6 +6,7 @@ const noticesSchema = new mongoose.Schema({
     date: { type: String, required: true },
     price: { type: Number, required: true },
     localization: { type: String, required: true, minlength: 4, maxlength: 50 },
+    picture: { type: String, required: true },
     saler: {type: Object, required: true, ref: 'User'}
   });
 

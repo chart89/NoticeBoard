@@ -1,5 +1,7 @@
 const Notice = require('../models/notices.model');
 const sanitize = require('mongo-sanitize');
+const getImageFileType = require('../utils/getImageFileType');
+const fs= require('fs');
 
 
 
@@ -28,11 +30,12 @@ exports.postOne = async (req, res) => {
 
     try {
       const { title, content, date, price, localization } = req.body;
+      const fileType = req.file? await getImageFileType(req.file) : 'unknown';
 
       const pattern = new RegExp('^[0-9]{2}-[0-9]{2}-[0-9]{4}');
       const datePatern = date.match(pattern);
 
-      if (!title || !content || !date || datePatern === null || !price || !localization) throw new Error('Invalid data');
+      if (title && content && date && datePatern !== null && price && localization && req.file && ['image/jpeg', 'image/png', 'image/gif'].includes(fileType)) { 
 
       const cleanTitle = sanitize(title);
       const cleanContent = sanitize(content);
@@ -44,11 +47,16 @@ exports.postOne = async (req, res) => {
         date: date, 
         price: price, 
         localization: cleanLocalization,
+        picture: req.file.filename,
         saler: req.session.user.id });
       await newNotice.save();
       res.json({ message: 'OK' });
-      
+      } else {
+        
+        throw new Error('Invalid data');
+      }
     } catch(err) {
+      fs.unlinkSync('public/uploads/' + req.file.filename);
       res.status(500).json({ message: err });
     }
 };

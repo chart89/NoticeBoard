@@ -4,6 +4,7 @@ const app = express();
 
 const NoticeController = require('../controllers/notices.controller');
 const authMiddleware = require('../utils/authMiddleware');
+const imageUpload = require('../utils/imageUploads');
 
 // get all notice
 router.get('/notice', NoticeController.getAll);
@@ -12,10 +13,10 @@ router.get('/notice', NoticeController.getAll);
 router.get('/notice/:id', NoticeController.getById);
 
 // post new notice
-router.post('/notice', authMiddleware, NoticeController.postOne);
+router.post('/notice', authMiddleware, imageUpload.single('picture'), NoticeController.postOne);
 
 // update notice
-router.put('/notice/:id', authMiddleware, NoticeController.putOne);
+router.put('/notice/:id', authMiddleware, imageUpload.single('picture'), NoticeController.putOne);
 
 // delete notice
 router.delete('/notice/:id', authMiddleware, NoticeController.deleteOne);
