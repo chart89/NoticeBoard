@@ -2,20 +2,17 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
+const helmet = require('helmet');
 
 
+// start express server
 const app = express();
-const noticeRoutes = require('./routes/notices.routes');
-
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-
-app.use('/api', noticeRoutes);
-
-app.use((req, res) => {
-    res.status(404).send({ message: 'Not found...' });
-  });
+app.use(helmet());
+app.listen('8000', () => {
+  console.log('Server is running on port: 8000');
+});
 
 // connects our backend code with the database
 const NODE_ENV = process.env.NODE_ENV;
@@ -33,9 +30,46 @@ db.once('open', () => {
 });
 db.on('error', err => console.log('Error ' + err));
 
-const server = app.listen('8000', () => {
-  console.log('Server is running on port: 8000');
-});
+// add middleware
+if(process.env.NODE_ENV !== 'production') {
+  app.use(
+    cors({
+      origin: ['http://localhost:3000'],
+      credentials: true,
+    })
+  );
+};
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(session({ secret: process.env.sessionSecret, 
+                  store: MongoStore.create(mongoose.connection), 
+                  resave: false, 
+                  saveUninitialized: false,
+                  cookie: {
+                    secure: process.env.NODE_ENV == 'production',
+                  }, 
+                }));
 
-module.exports = server;
+app.use(express.static(path.join(__dirname, '/public')));      
+
+
+// add routes
+const noticeRoutes = require('./routes/notices.routes');
+const userRoutes = require('./routes/users.routes');
+const authRoutes = require('./routes/auth.routes');
+
+
+// add endpoints
+app.use('/api', noticeRoutes);
+app.use('/api', userRoutes);
+app.use('/auth', authRoutes);
+
+app.use((req, res) => {
+    res.status(404).send({ message: 'Not found...' });
+  });
+
+
+
+
+
 
