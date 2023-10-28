@@ -48,10 +48,11 @@ app.use(session({ secret: process.env.sessionSecret,
                   cookie: {
                     secure: process.env.NODE_ENV == 'production',
                   }, 
-                }));
+}));      
 
-app.use(express.static(path.join(__dirname, '/public')));      
-
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, '/public')));
+app.use(express.static(path.join(__dirname, '/client/build')));
 
 // add routes
 const noticeRoutes = require('./routes/notices.routes');
@@ -63,6 +64,7 @@ const authRoutes = require('./routes/auth.routes');
 app.use('/api', noticeRoutes);
 app.use('/api', userRoutes);
 app.use('/auth', authRoutes);
+
 
 app.use((req, res) => {
     res.status(404).send({ message: 'Not found...' });

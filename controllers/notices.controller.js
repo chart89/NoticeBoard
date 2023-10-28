@@ -69,45 +69,62 @@ exports.putOne = async (req, res) => {
       if(noticeExist){
         const { title, content, date, price, localization } = req.body;
 
+        const fileType = req.file? await getImageFileType(req.file) : 'unknown';
+
+        
         const pattern = new RegExp('^[0-9]{2}-[0-9]{2}-[0-9]{4}');
         const datePatern = date.match(pattern);
 
-        if (!title || !content || !date || datePatern === null || !price || !localization) throw new Error('Invalid data');
+        if (title && content && date && datePatern !== null && price && localization) { 
 
-        const cleanTitle = sanitize(title);
-        const cleanContent = sanitize(content);
-        const cleanLocalization = sanitize(localization);
+          // file validation
+          if (req.file && ['image/jpeg', 'image/png', 'image/gif'].includes(fileType) !== true){
+            fs.unlinkSync('public/uploads/' + req.file.filename); // delete uncorrect file
+            return res.status(400).send({ message: 'Bad photo'});
+          } else if (req.file && noticeExist.picture) {
+            fs.unlinkSync('public/uploads/' + noticeExist.picture); // if there is a new picture, the old one have to be deleted
+          };
 
-        await Notice.updateOne({ _id: req.params.id }, { $set: {
-          title: cleanTitle,
-          content: cleanContent, 
-          date: date, 
-          price, localization:cleanLocalization 
-        }});
+          const cleanTitle = sanitize(title);
+          const cleanContent = sanitize(content);
+          const cleanLocalization = sanitize(localization);
 
-        const notCh = await Notice.findById(req.params.id);
-        res.json(notCh);
-      } else res.status(404).json({message: 'Not found...'});
-    }
-    catch(err) {
+          await Notice.updateOne({ _id: req.params.id }, { $set: {
+            title: cleanTitle,
+            content: cleanContent, 
+            date: date, 
+            price: price,
+            localization: cleanLocalization,
+            picture: req.file? req.file.filename : noticeExist.picture, // if 
+          }});
+
+          const notCh = await Notice.findById(req.params.id);
+          res.json(notCh);
+        }
+      } else {
+        
+        throw new Error('Invalid data');
+      }
+    } catch(err) {
+      
       res.status(500).json({ message: err });
     }
-  };
+}
 
-  exports.deleteOne = async (req, res) => {
-    try {
-      const not = await Notice.findById(req.params.id);
-      if(not) {
-        await Notice.deleteOne({ _id: req.params.id });
-        res.json(not);
-      } else res.status(404).json({ message: 'Not found...' });
-    }
-    catch(err) {
-      res.status(500).json({ message: err });
-    }
-  };
+exports.deleteOne = async (req, res) => {
+  try {
+    const not = await Notice.findById(req.params.id);
+    if(not) {
+      await Notice.deleteOne({ _id: req.params.id });
+      res.json(not);
+    } else res.status(404).json({ message: 'Not found...' });
+  }
+  catch(err) {
+    res.status(500).json({ message: err });
+  }
+};
 
-  exports.searchAll = async (req, res) => {
+exports.searchAll = async (req, res) => {
     try {
         const findTitle = await Notice.find({author:{$regex: req.params.searchPhrase, $options:"i" }});
         res.json(findTitle);
@@ -115,4 +132,4 @@ exports.putOne = async (req, res) => {
     catch (err) {
         res.status(500).json({ message: err });
     }
-  };
+};
