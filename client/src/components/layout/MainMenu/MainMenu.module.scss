@@ -1,0 +1,13 @@
+.navDiv {
+    margin: 0 10px;
+
+    p {
+        color: #fff;
+        font-weight: 500;
+
+        &.link:hover {
+            color: orange;
+        }
+    }
+}
+

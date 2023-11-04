@@ -39,6 +39,7 @@ if(process.env.NODE_ENV !== 'production') {
     })
   );
 };
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(session({ secret: process.env.sessionSecret, 
@@ -63,7 +64,7 @@ const authRoutes = require('./routes/auth.routes');
 // add endpoints
 app.use('/api', noticeRoutes);
 app.use('/api', userRoutes);
-app.use('/auth', authRoutes);
+app.use('/api/auth', authRoutes);
 
 
 app.use((req, res) => {
