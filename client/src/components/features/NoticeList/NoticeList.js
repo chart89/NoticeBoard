@@ -8,8 +8,6 @@ import { IMGS_URL } from '../../../config';
 
 const NoticeList = ({ title, localization, _id, picture }) => {
 
-    console.log(IMGS_URL, title)
-
     return (
         <div>
             <Row className="my-3">

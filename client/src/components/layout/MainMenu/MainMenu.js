@@ -13,8 +13,8 @@ return (
                 <Nav>
                     <Nav.Link  as={NavLink} to={'/'}><p className={'my-auto ' + styles.link}>Home</p></Nav.Link>
                     <Nav.Link  as={NavLink} to={'/register'}><p className={'my-auto ' + styles.link}>Register</p></Nav.Link>
-                    <Nav.Link  as={NavLink} to={'/'}><p className={'my-auto ' + styles.link}>Log in</p></Nav.Link>
-                    <Nav.Link  as={NavLink} to={'/'}><p className={'my-auto ' + styles.link}>Log out</p></Nav.Link>
+                    <Nav.Link  as={NavLink} to={'/login'}><p className={'my-auto ' + styles.link}>Login</p></Nav.Link>
+                    <Nav.Link  as={NavLink} to={'/logout'}><p className={'my-auto ' + styles.link}>Logout</p></Nav.Link>
                 </Nav>
             </div>
     </Navbar>

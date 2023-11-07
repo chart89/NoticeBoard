@@ -31,7 +31,9 @@ exports.postOne = async (req, res) => {
     try {
       const { title, content, date, price, localization } = req.body;
       const fileType = req.file? await getImageFileType(req.file) : 'unknown';
-
+      console.log('user', req.session.user);
+      console.log('file', req.file);
+      console.log('body', req.body);
       const pattern = new RegExp('^[0-9]{2}-[0-9]{2}-[0-9]{4}');
       const datePatern = date.match(pattern);
 

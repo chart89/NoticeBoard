@@ -12,6 +12,8 @@ const Register = () => {
     const [phone, setPhone] = useState('');
     const [avatar, setAvatar] = useState(null);
     const [status, setStatus] = useState(null) // null, 'loading', 'success', 'serverError', 'clientError', 'loginError'
+
+
     const handleSubmit = e => {
         e.preventDefault();
 

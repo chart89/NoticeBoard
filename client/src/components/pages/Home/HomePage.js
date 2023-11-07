@@ -10,8 +10,10 @@ import Nav from 'react-bootstrap/Nav';
 import { NavLink } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 
+
 const Home = () => {
   const dispatch = useDispatch();
+
   const notices = useSelector(getNotice);
   
   useEffect(() => {
@@ -32,7 +34,7 @@ const Home = () => {
     </Container>
     <Container>
       <Row>
-        {notices.map(notice => <NoticeList key={notice._id} {...notice} />)}
+      {notices && notices.map(notice => <NoticeList key={notice._id} {...notice} />)}
       </Row>
     </Container>
   </>

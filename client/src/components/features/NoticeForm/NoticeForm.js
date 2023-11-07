@@ -13,13 +13,14 @@ const NoticeForm = ({ action, actionText, ...props }) => {
     const [date, setDate] = useState(props.date || '');
     const [content, setContent] = useState(props.content || '');
     const [localization, setLocalization] = useState(props.localization || '');
+    const [picture, setPicture] = useState(props.picture || null);
   
     const { register, handleSubmit: validate, formState: { errors } } = useForm();
     
 
     const handleSubmit = e => {
         
-          action({ title, content, date, price, localization });
+          action({ title, content, date, price, localization, picture, });
         
       };
 
@@ -86,9 +87,8 @@ const NoticeForm = ({ action, actionText, ...props }) => {
 
           <Form.Group controlId="formFile" className="mb-3">
             <Form.Label>Select file</Form.Label>
-            <Form.Control className={styles.input} type="file" />
+            <Form.Control className={styles.input} type="file" onChange={e => setPicture(e.target.files[0])} />
           </Form.Group>
-          
 
           <Button variant="primary" type="submit">
             {actionText}

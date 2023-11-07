@@ -13,7 +13,7 @@ router.get('/notice', NoticeController.getAll);
 router.get('/notice/:id', NoticeController.getById);
 
 // post new notice
-router.post('/notice', authMiddleware, imageUpload.single('picture'), NoticeController.postOne);
+router.post('/notice', imageUpload.single('picture'), NoticeController.postOne);
 
 // update notice
 router.put('/notice/:id', authMiddleware, imageUpload.single('picture'), NoticeController.putOne);
