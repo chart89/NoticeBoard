@@ -8,6 +8,7 @@ import Card from 'react-bootstrap/Card';
 import Nav from 'react-bootstrap/Nav';
 import { NavLink } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
+import { IMGS_URL } from '../../../config';
 
 const SingleNotice = () => {
 
@@ -18,7 +19,7 @@ const SingleNotice = () => {
     return (
         <Container>
             <Card className="my-5 mx-auto" style={{ width: '25rem' }}>
-                <Card.Img variant="top" className={styles.noticeIMG} src="https://images.pexels.com/photos/3089389/pexels-photo-3089389.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" />
+                <Card.Img variant="top" className={styles.noticeIMG} src={NoticeData.picture && IMGS_URL + '/' + NoticeData.picture} alt={NoticeData.picture} />
                 <Card.Body>
                     <Card.Title>{ NoticeData.title }</Card.Title>
                     <Card.Text>
