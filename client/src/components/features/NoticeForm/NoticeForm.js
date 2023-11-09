@@ -4,9 +4,13 @@ import Button from 'react-bootstrap/Button';
 import styles from './NoticeForm.module.scss';
 import PropTypes from 'prop-types';
 import { useForm } from "react-hook-form";
+import { useSelector } from 'react-redux';
+import { getUser } from '../../../redux/userRedux';
 
 
 const NoticeForm = ({ action, actionText, ...props }) => {
+
+    const {login} = useSelector(getUser);
 
     const [title, setTitle] = useState(props.title || '');
     const [price, setPrice] = useState(props.price || '');
@@ -20,7 +24,7 @@ const NoticeForm = ({ action, actionText, ...props }) => {
 
     const handleSubmit = e => {
         
-          action({ title, content, date, price, localization, picture, });
+          action({ title, content, date, price, localization, picture, login });
         
       };
 

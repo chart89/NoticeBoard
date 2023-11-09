@@ -10,10 +10,13 @@ const Logout = () => {
 
     const dispatch = useDispatch();
     const isUser = useSelector(getUser);
+
     
     useEffect(() => {
     const options = {
         method: 'DELETE',
+        credentials: 'include',
+        body: JSON.stringify({...isUser})
     }
     fetch(API_URL + '/auth/logout', options)
     .then(() => {

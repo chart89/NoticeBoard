@@ -53,9 +53,17 @@ exports.login = async (req, res) => {
 }
 
 exports.logout = async (req, res) => {
-  await req.session.destroy();
+  try {
+    const { login } = req.body;
+    console.log('reqbody', req.body)
+    const user = await User.findOne({ login });
+    req.session.user = {login: user.login };
+
+    await req.session.destroy();
     res.send({ message: "Session end"});
-  
+  } catch (err) {
+    res.status(500).json({ message: err });
+  }
 }
 
 exports.getUser = async (req, res) => {

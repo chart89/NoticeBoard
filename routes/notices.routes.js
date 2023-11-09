@@ -16,10 +16,10 @@ router.get('/notice/:id', NoticeController.getById);
 router.post('/notice', imageUpload.single('picture'), NoticeController.postOne);
 
 // update notice
-router.put('/notice/:id', authMiddleware, imageUpload.single('picture'), NoticeController.putOne);
+router.put('/notice/:id', imageUpload.single('picture'), NoticeController.putOne);
 
 // delete notice
-router.delete('/notice/:id', authMiddleware, NoticeController.deleteOne);
+router.delete('/notice/:id', NoticeController.deleteOne);
 
 // find notice by title
 

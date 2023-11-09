@@ -2,6 +2,7 @@ const Notice = require('../models/notices.model');
 const sanitize = require('mongo-sanitize');
 const getImageFileType = require('../utils/getImageFileType');
 const fs= require('fs');
+const User = require('../models/users.model');
 
 
 
@@ -29,8 +30,12 @@ exports.getById = async (req, res) => {
 exports.postOne = async (req, res) => {
 
     try {
-      const { title, content, date, price, localization } = req.body;
+      const { title, content, date, price, localization, login } = req.body;
       const fileType = req.file? await getImageFileType(req.file) : 'unknown';
+
+      const user = await User.findOne({ login });
+      //req.session.user = {login: user.login, id: user._id};
+
       console.log('user', req.session.user);
       console.log('file', req.file);
       console.log('body', req.body);
@@ -50,7 +55,7 @@ exports.postOne = async (req, res) => {
         price: price, 
         localization: cleanLocalization,
         picture: req.file.filename,
-        saler: req.session.user.id });
+        saler: user.id });
       await newNotice.save();
       res.json({ message: 'OK' });
       } else {
@@ -66,6 +71,7 @@ exports.postOne = async (req, res) => {
 exports.putOne = async (req, res) => {
   
     try {
+      
       const noticeExist = await Notice.findById(req.params.id);
 
       if(noticeExist){

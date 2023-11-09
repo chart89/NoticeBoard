@@ -9,12 +9,14 @@ import Col from 'react-bootstrap/Col';
 import Nav from 'react-bootstrap/Nav';
 import { NavLink } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
+import { getUser } from '../../../redux/userRedux';
 
 
 const Home = () => {
   const dispatch = useDispatch();
 
   const notices = useSelector(getNotice);
+  const isUser = useSelector(getUser);
   
   useEffect(() => {
     dispatch(loadNoticesRequest())
@@ -27,7 +29,7 @@ const Home = () => {
         <Col><h1>All offers</h1></Col>
           <Col xs={2}>
             <Nav className="justify-content-end">
-              <Nav.Link className="pe-0" as={NavLink} to="/notice/add"><Button variant="outline-info">Add notice</Button>{' '}</Nav.Link>
+              {isUser !== null && <Nav.Link className="pe-0" as={NavLink} to="/notice/add"><Button variant="outline-info">Add notice</Button>{' '}</Nav.Link>}
             </Nav>
           </Col>
       </Row>

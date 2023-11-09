@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import { getNoticeById } from "../../../redux/noticeRedux";
 import { useParams, Navigate } from 'react-router';
+import { editNoticeRequest } from '../../../redux/noticeRedux';
 
 const EditNoticeForm = () => {
 
@@ -17,7 +18,7 @@ const EditNoticeForm = () => {
 
     const handleSubmit = notice => {
 
-        //dispatch(editNotice({...notice, id}));
+        dispatch(editNoticeRequest({...notice, id}));
         
         navigate("/");
     };

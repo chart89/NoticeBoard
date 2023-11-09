@@ -4,12 +4,10 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
-const helmet = require('helmet');
 
 
 // start express server
 const app = express();
-app.use(helmet());
 app.listen('8000', () => {
   console.log('Server is running on port: 8000');
 });
@@ -31,7 +29,7 @@ db.once('open', () => {
 db.on('error', err => console.log('Error ' + err));
 
 // add middleware
-if(process.env.NODE_ENV !== 'production') {
+if(NODE_ENV !== 'production') {
   app.use(
     cors({
       origin: ['http://localhost:3000'],
@@ -42,12 +40,12 @@ if(process.env.NODE_ENV !== 'production') {
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(session({ secret: process.env.sessionSecret, 
+app.use(session({ secret: 'Halo', 
                   store: MongoStore.create(mongoose.connection), 
                   resave: false, 
                   saveUninitialized: false,
                   cookie: {
-                    secure: process.env.NODE_ENV == 'production',
+                    secure: NODE_ENV == 'production',
                   }, 
 }));      
 
