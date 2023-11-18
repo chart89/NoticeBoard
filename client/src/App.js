@@ -10,6 +10,7 @@ import Logout from './components/pages/Logout/Logout';
 // import routes
 import Home from './components/pages/Home/HomePage';
 import { Container } from 'react-bootstrap';
+import Search from './components/features/Search/Search';
 
 
 const App = () => (
@@ -23,6 +24,7 @@ const App = () => (
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
+        <Route path="/notice/search/:searchPhrase" element={<Search />} />
       </Routes>
     </MainLayout>
   </Container>

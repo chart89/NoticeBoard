@@ -55,7 +55,7 @@ exports.login = async (req, res) => {
 exports.logout = async (req, res) => {
   try {
     const { login } = req.body;
-    console.log('reqbody', req.body)
+    console.log('darek', req.session);
     const user = await User.findOne({ login });
     req.session.user = {login: user.login };
 

@@ -134,7 +134,7 @@ exports.deleteOne = async (req, res) => {
 
 exports.searchAll = async (req, res) => {
     try {
-        const findTitle = await Notice.find({author:{$regex: req.params.searchPhrase, $options:"i" }});
+        const findTitle = await Notice.find({title:{$regex: req.params.searchPhrase, $options:"i" }});
         res.json(findTitle);
     }
     catch (err) {

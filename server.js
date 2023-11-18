@@ -16,7 +16,7 @@ app.listen('8000', () => {
 const NODE_ENV = process.env.NODE_ENV;
 let dbUri = '';
 
-if(NODE_ENV === 'production') dbUri = 'url to remote db';
+if(NODE_ENV === 'production') dbUri = `mongodb+srv://${process.env.DB_PASS}@cluster0.3qxxs4z.mongodb.net/noticeDB?retryWrites=true&w=majority`;
 else if(NODE_ENV === 'test') dbUri = 'mongodb://0.0.0.0:27017/noticeDBtest';
 else dbUri = 'mongodb://0.0.0.0:27017/noticeDB';
 
@@ -45,7 +45,7 @@ app.use(session({ secret: 'Halo',
                   resave: false, 
                   saveUninitialized: false,
                   cookie: {
-                    secure: NODE_ENV == 'production',
+                    secure: NODE_ENV === 'production',
                   }, 
 }));      
 

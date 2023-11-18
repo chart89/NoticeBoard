@@ -1,4 +1,7 @@
+const session = require("express-session");
+
 const authMiddleware = (req, res, next) => {
+    console.log('Patryk', req.session);
     if (req.session.user) {
         next();
     } else {

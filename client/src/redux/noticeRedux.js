@@ -4,6 +4,7 @@ import { API_URL } from '../config';
 /* SELECTORS */
 export const getNotice = ({ notices }) => notices.data;
 export const getNoticeById = ({ notices }, id) => notices.data.find(notice => notice._id === id);
+export const getSearchPhrase = ({notices}, searchPhrase) => notices.data.filter(notice => notice.title.includes(searchPhrase));
 
 
 /* ACTIONS */
