@@ -97,7 +97,7 @@ export const editNoticeRequest = ({title, content, date, price, localization, pi
   } 
 };
 
-export const deleteNoticeRequest = () => {
+export const deleteNoticeRequest = (id) => {
   return async dispatch => {
 
     try {
