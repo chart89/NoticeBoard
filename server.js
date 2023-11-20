@@ -14,6 +14,7 @@ app.listen(process.env.PORT || 8000, () => {
 
 // connects our backend code with the database
 const NODE_ENV = process.env.NODE_ENV;
+const SECRET = process.env.SECRET;
 let dbUri = '';
 
 if(NODE_ENV === 'production') dbUri = `mongodb+srv://${process.env.DB_PASS}@cluster0.3qxxs4z.mongodb.net/noticeDB?retryWrites=true&w=majority`;
@@ -40,12 +41,12 @@ if(NODE_ENV !== 'production') {
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(session({ secret: 'Halo', 
+app.use(session({ secret: SECRET, 
                   store: MongoStore.create(mongoose.connection), 
                   resave: false, 
                   saveUninitialized: false,
                   cookie: {
-                    secure: NODE_ENV === 'production',
+                    secure: process.env.NODE_ENV == 'production',
                   }, 
 }));      
 
@@ -64,10 +65,14 @@ app.use('/api', noticeRoutes);
 app.use('/api', userRoutes);
 app.use('/api/auth', authRoutes);
 
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '/client/build/index.html'));
+});
+
 
 app.use((req, res) => {
     res.status(404).send({ message: 'Not found...' });
-  });
+});
 
 
 
